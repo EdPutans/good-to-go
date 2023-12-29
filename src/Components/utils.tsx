@@ -15,6 +15,15 @@ export const seed = () => {
           { id: "2", name: "Yiff", checked: true },
         ],
       },
+      {
+        id: "2",
+        name: "alt",
+        items: [
+          { id: "1", name: "Take a shit", checked: false },
+          { id: "3", name: "Break a knee", checked: true },
+          { id: "2", name: "Yeer", checked: false },
+        ],
+      },
     ] as Checklist[])
   );
 };

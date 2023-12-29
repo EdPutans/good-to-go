@@ -13,8 +13,6 @@ const ChecklistScreen = ({ checklist, handleCheckItem }: Props) => {
 
   return (
     <ScrollView style={{ flex: 1, width: "100%" }}>
-      {/* <Text variant="displayLarge">{checklist.name}</Text> */}
-      {/* <View> */}
       {checklist.items.map((item) => (
         <Checkbox.Item
           style={{ flexDirection: "row-reverse" }}
@@ -24,7 +22,6 @@ const ChecklistScreen = ({ checklist, handleCheckItem }: Props) => {
           onPress={() => handleCheckItem(item.id)}
         />
       ))}
-      {/* </View> */}
     </ScrollView>
   );
 };
