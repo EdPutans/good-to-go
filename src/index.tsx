@@ -21,7 +21,7 @@ const Main = () => {
   );
 
   useEffect(() => {
-    // seed()
+    // seed();
     setVisibleSection("checklist");
     getActiveChecklist().then((checklist) => {
       console.log(checklist);
@@ -32,10 +32,12 @@ const Main = () => {
   return (
     <View style={styles.container}>
       <Appbar>
+        <Appbar.Action icon="menu" onPress={() => {}} />
+        <Appbar.Content title={activeChecklist?.name} />
         {/* <Appbar.Action icon="menu" onPress={onToggleDrawer} /> */}
-        <Text variant="headlineMedium">
+        {/* <Text variant="headlineMedium">
           {activeChecklist?.name || "No active checklist"}
-        </Text>
+        </Text> */}
       </Appbar>
       {/* <Drawer.Section title="Some title">
       <Drawer.Item

@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { Checkbox, Text } from "react-native-paper";
 import { Checklist } from "../types";
 
@@ -12,8 +12,8 @@ const ChecklistScreen = ({ checklist, handleCheckItem }: Props) => {
   if (!checklist) return null;
 
   return (
-    <View style={{ flex: 1, width: "100%" }}>
-      <Text variant="headlineMedium">{checklist.name}</Text>
+    <ScrollView style={{ flex: 1, width: "100%" }}>
+      <Text variant="displayLarge">{checklist.name}</Text>
       <View>
         {checklist.items.map((item) => (
           <Checkbox.Item
@@ -25,7 +25,7 @@ const ChecklistScreen = ({ checklist, handleCheckItem }: Props) => {
           />
         ))}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
