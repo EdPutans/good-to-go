@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
 const Main = () => {
   const [visibleSection, setVisibleSection] = useState<Section>("checklist");
   const [activeChecklist, setActiveChecklist] = useState<Checklist | null>(
@@ -29,36 +30,16 @@ const Main = () => {
     });
   }, []);
 
+  const toggleSidebarVisible = () => {
+    setVisibleSection("checklist");
+  };
+
   return (
     <View style={styles.container}>
       <Appbar>
-        <Appbar.Action icon="menu" onPress={() => {}} />
+        <Appbar.Action icon="menu" onPress={toggleSidebarVisible} />
         <Appbar.Content title={activeChecklist?.name} />
-        {/* <Appbar.Action icon="menu" onPress={onToggleDrawer} /> */}
-        {/* <Text variant="headlineMedium">
-          {activeChecklist?.name || "No active checklist"}
-        </Text> */}
       </Appbar>
-      {/* <Drawer.Section title="Some title">
-      <Drawer.Item
-        onPress={() => {
-          setVisibleSection("checklist");
-        }}
-        label="Checklist"
-      />
-      <Drawer.Item
-        onPress={() => {
-          setVisibleSection("settings");
-        }}
-        label="Settings"
-      />
-      <Drawer.Item
-        onPress={() => {
-          setVisibleSection("single-edit");
-        }}
-        label="Single Edit"
-      />
-    </Drawer.Section> */}
 
       {!activeChecklist && <Text>Create one!</Text>}
 
@@ -71,12 +52,6 @@ const Main = () => {
           }}
         />
       )}
-      {/* {visibleSection === "settings" && (
-    <Sidebar
-    //  onChangeActiveChecklist={handleSetActiveChecklist}
-    />
-  )} */}
-      {/* {visibleSection === "single-edit" && <SingleEditScreen />} */}
     </View>
   );
 };
