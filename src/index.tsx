@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Appbar, Text } from "react-native-paper";
+import { Appbar, Button, Text } from "react-native-paper";
 
 import ChecklistScreen from "./Components/ChecklistScreen";
 import { getActiveChecklist, handleCheckItem } from "./Components/utils";
@@ -30,8 +30,9 @@ const Main = () => {
     });
   }, []);
 
+  const [sidebarVisible, setSidebarVisible] = useState(false);
   const toggleSidebarVisible = () => {
-    setVisibleSection("checklist");
+    setSidebarVisible(!sidebarVisible);
   };
 
   return (
@@ -40,6 +41,34 @@ const Main = () => {
         <Appbar.Action icon="menu" onPress={toggleSidebarVisible} />
         <Appbar.Content title={activeChecklist?.name} />
       </Appbar>
+      {sidebarVisible && (
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            zIndex: 1000,
+          }}
+        >
+          <View
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "50%",
+              height: "100%",
+              backgroundColor: "white",
+              zIndex: 1001,
+            }}
+          >
+            <Button onPress={toggleSidebarVisible}>Close</Button>
+            <Text>sidebar</Text>
+          </View>
+        </View>
+      )}
 
       {!activeChecklist && <Text>Create one!</Text>}
 
