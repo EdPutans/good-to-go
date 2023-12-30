@@ -16,8 +16,6 @@ const styles = StyleSheet.create({
 });
 
 const Main = ({ navigation }) => {
-  console.log(navigation);
-
   const [visibleSection, setVisibleSection] = useState<Section>("checklist");
   const [activeChecklist, setActiveChecklist] = useState<Checklist | null>(
     null
