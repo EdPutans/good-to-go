@@ -79,7 +79,7 @@ export const handleSetActiveChecklist = async (id: string) => {
 
   if (!checklist) return null;
 
-  AsyncStorage.setItem("activeChecklistId", JSON.stringify(checklist.id));
+  AsyncStorage.setItem("activeChecklistId", checklist.id);
   return checklist;
 };
 
@@ -87,10 +87,15 @@ export const handleSetActiveChecklist = async (id: string) => {
 
 export const handleCheckItem = async (itemId: string) => {
   const activeChecklistId = await getActiveChecklistId();
-  if (!activeChecklistId) return null;
+  if (!activeChecklistId) {
+    return null;
+  }
 
   const checklist = await getChecklistById(activeChecklistId);
-  if (!checklist) return null;
+  if (!checklist) {
+    console.log("no checklist", { activeChecklistId });
+    return null;
+  }
 
   checklist.items = checklist.items.map((item) => {
     if (item.id === itemId) {

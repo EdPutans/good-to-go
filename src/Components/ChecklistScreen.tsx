@@ -19,7 +19,7 @@ const ChecklistScreen = ({ checklist, handleCheckItem }: Props) => {
           label={item.name}
           key={item.id}
           status={item.checked ? "checked" : "unchecked"}
-          onPress={() => handleCheckItem(item.id)}
+          onPress={() => handleCheckItem(checklist.id, item.id)}
         />
       ))}
     </ScrollView>
