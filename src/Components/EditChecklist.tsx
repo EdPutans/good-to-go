@@ -1,19 +1,25 @@
 import React from "react";
 import { FlatList, View } from "react-native";
-import { FAB, IconButton, Text, TextInput } from "react-native-paper";
+import {
+  Appbar,
+  FAB,
+  IconButton,
+  Surface,
+  Text,
+  TextInput,
+} from "react-native-paper";
 import { Checklist } from "../types";
 
 type Props = {
   checklist: Checklist;
   handleSaveChecklist: (checklist: Checklist) => void;
+  handleBack: () => void;
 };
 
-const EditChecklist = (props: Props) => {
-  const [editedChecklist, setEditedChecklist] = React.useState<Checklist>(
-    props.checklist
-  );
+const useEditChecklist = (checklist: Checklist) => {
+  const [editedChecklist, setEditedChecklist] =
+    React.useState<Checklist>(checklist);
   const isAddDisabled = editedChecklist.items.some((item) => !item.name);
-
   const getHandleAdd = () => {
     if (isAddDisabled) return undefined;
     return () => {
@@ -46,6 +52,25 @@ const EditChecklist = (props: Props) => {
       ),
     }));
   };
+  return {
+    editedChecklist,
+    setEditedChecklist,
+    isAddDisabled,
+    getHandleAdd,
+    handleRemove,
+    handleEdit,
+  };
+};
+
+const EditChecklist = (props: Props) => {
+  const {
+    editedChecklist,
+    setEditedChecklist,
+    isAddDisabled,
+    getHandleAdd,
+    handleRemove,
+    handleEdit,
+  } = useEditChecklist(props.checklist);
 
   const renderField = (item: Checklist["items"][number]) => (
     <View key={item.id}>
@@ -60,6 +85,7 @@ const EditChecklist = (props: Props) => {
         }}
         returnKeyType="next"
         blurOnSubmit={false}
+        placeholder="Add entry..."
         onSubmitEditing={getHandleAdd}
         style={{ marginBottom: 5 }}
         value={item.name}
@@ -74,49 +100,57 @@ const EditChecklist = (props: Props) => {
 
   return (
     <>
-      <FlatList
-        ListHeaderComponentStyle={{ padding: 5 }}
-        ListHeaderComponent={
-          <TextInput
-            placeholder="My checklist name"
-            value={editedChecklist.name}
-            onChangeText={(t) =>
-              setEditedChecklist((prev) => ({ ...prev, name: t }))
-            }
-          />
-        }
-        scrollEnabled
-        data={editedChecklist.items}
-        ListEmptyComponent={<Text>Empty checklist. Add some items:</Text>}
-        renderItem={(vListItem) => renderField(vListItem.item)}
-        style={{ padding: 5 }}
-        ListFooterComponent={
-          <IconButton
-            icon="plus"
-            onPress={getHandleAdd()}
-            disabled={!getHandleAdd()}
-            style={{ width: "100%" }}
-          />
-        }
-      ></FlatList>
-      <FAB
-        style={{
-          position: "absolute",
-          margin: 10,
-          right: 0,
-          bottom: 0,
-        }}
-        disabled={
-          isAddDisabled ||
-          !editedChecklist.name ||
-          !editedChecklist.items.length
-        }
-        onPress={() => {
-          props.handleSaveChecklist(editedChecklist);
-          // props.navigation.navigate("settings");
-        }}
-        icon="check"
-      />
+      <Appbar>
+        <Appbar.BackAction onPress={props.handleBack} />
+        <Appbar.Content title={`Editing: ${editedChecklist.name}`} />
+        <Appbar.Action icon="delete"></Appbar.Action>
+      </Appbar>
+      <Surface style={{ flex: 1 }}>
+        <Text variant="bodyLarge">Checklist name</Text>
+
+        <TextInput
+          placeholder="Name of the checklist"
+          style={{}}
+          value={editedChecklist.name}
+          onChangeText={(t) =>
+            setEditedChecklist((prev) => ({ ...prev, name: t }))
+          }
+        />
+        <Text variant="bodyLarge">Checklist items</Text>
+        <FlatList
+          scrollEnabled
+          data={editedChecklist.items}
+          ListEmptyComponent={
+            <Text>Empty checklist. Add some items, I guess?</Text>
+          }
+          renderItem={(vListItem) => renderField(vListItem.item)}
+          ListFooterComponent={
+            <IconButton
+              icon="plus"
+              onPress={getHandleAdd()}
+              disabled={!getHandleAdd()}
+              style={{ width: "100%" }}
+            />
+          }
+        ></FlatList>
+        <FAB
+          style={{
+            position: "absolute",
+            margin: 10,
+            right: 0,
+            bottom: 0,
+          }}
+          disabled={
+            isAddDisabled ||
+            !editedChecklist.name ||
+            !editedChecklist.items.length
+          }
+          onPress={() => {
+            props.handleSaveChecklist(editedChecklist);
+          }}
+          icon="check"
+        />
+      </Surface>
     </>
   );
 };

@@ -5,6 +5,7 @@ import { Checklist } from "../types";
 import EditChecklist from "./EditChecklist";
 import ManageChecklists from "./ManageChecklists";
 import { Sidebar } from "./Sidebar";
+import { ThemeTest } from "./ThemeTest";
 import { useChecklistState } from "./hooks";
 
 export function Navigator() {
@@ -45,6 +46,7 @@ export function Navigator() {
         <EditChecklist
           checklist={checklist}
           handleSaveChecklist={props.handleSaveChecklist}
+          handleBack={() => setVisibleSection("settings")}
         />
       );
     } else if (visibleSection && "checklistId" in visibleSection) {
@@ -60,15 +62,28 @@ export function Navigator() {
     // }
   };
 
+  const showAppBar = React.useMemo(() => {
+    if (!visibleSection) return false;
+    if (visibleSection === "settings") return true;
+    else if (visibleSection && "editChecklistId" in visibleSection) {
+      return false;
+    } else if (visibleSection && "checklistId" in visibleSection) {
+      return true;
+    }
+  }, [visibleSection]);
+
   return (
     <>
-      <Appbar>
-        <Appbar.Action
-          icon="menu"
-          onPress={() => setShowSidebar((prev) => !prev)}
-        />
-        <Appbar.Content title={props.selectedChecklist?.name} />
-      </Appbar>
+      {showAppBar && (
+        <Appbar>
+          <Appbar.Action
+            icon="menu"
+            onPress={() => setShowSidebar((prev) => !prev)}
+          />
+          <Appbar.Content title={props.selectedChecklist?.name || "Settings"} />
+        </Appbar>
+      )}
+      <ThemeTest />
       <RenderContent />
       <Sidebar
         setVisibleSection={setVisibleSection}
