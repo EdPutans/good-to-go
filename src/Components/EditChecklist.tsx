@@ -113,7 +113,7 @@ const EditChecklist = (props: Props) => {
         }
         onPress={() => {
           props.handleSaveChecklist(editedChecklist);
-          props.navigation.navigate("settings");
+          // props.navigation.navigate("settings");
         }}
         icon="check"
       />

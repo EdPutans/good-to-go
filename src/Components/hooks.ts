@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Checklist } from "../types";
 const fakeList = [
   {
@@ -21,18 +21,34 @@ const fakeList = [
   },
 ];
 export const useChecklistState = () => {
+  const [visibleSection, setVisibleSection] = React.useState<
+    { checklistId: string } | { editChecklistId: string } | "settings" | null
+  >();
+
   const [isSaving, setIsSaving] = useState(false);
   const [availableChecklists, setAvailableChecklists] = useState<Checklist[]>(
     []
   );
-  const [selectedChecklist, setSelectedChecklist] = useState<Checklist | null>(
-    null
-  );
+
+  const selectedChecklist =
+    (visibleSection &&
+      availableChecklists.find((c) => c.id === visibleSection?.checklistId)) ||
+    null;
+
+  const setSelectedChecklist = (c: Checklist) => {
+    setVisibleSection({ checklistId: c.id });
+  };
 
   useEffect(() => {
-    if (!availableChecklists?.length) {
-      setAvailableChecklists(fakeList);
-    }
+    //once
+    // if (!availableChecklists?.length) {
+    setAvailableChecklists(fakeList);
+    // }
+  }, []);
+
+  useEffect(() => {
+    if (!availableChecklists?.length) return;
+
     setSelectedChecklist(availableChecklists[0]);
   }, [availableChecklists]);
 
@@ -81,5 +97,7 @@ export const useChecklistState = () => {
     isSaving,
     selectedChecklist,
     setSelectedChecklist,
+    visibleSection,
+    setVisibleSection,
   };
 };

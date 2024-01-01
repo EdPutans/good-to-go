@@ -1,7 +1,11 @@
 import React from "react";
 import { List } from "react-native-paper";
+import { Checklist } from "../types";
 
-const ManageChecklists = (props: Props) => {
+const ManageChecklists = (props: {
+  checklists: Checklist[];
+  handleClickManageChecklist: (id: string) => void;
+}) => {
   return (
     <>
       <List.Section title="Manage Checklists">
@@ -10,11 +14,7 @@ const ManageChecklists = (props: Props) => {
             right={(props) => <List.Icon {...props} icon="chevron-right" />}
             title={checklist.name}
             key={checklist.id}
-            onPress={() =>
-              props.navigation.navigate(`edit-checklist-${checklist.id}`, {
-                checklist,
-              })
-            }
+            onPress={() => props.handleClickManageChecklist(checklist.id)}
           />
         ))}
       </List.Section>
