@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Main = ({ navigation, checklist, ...props }) => {
+const Main = ({ checklist, ...props }) => {
   return (
     <View style={styles.container}>
       {!checklist && <Text>Create one!</Text>}

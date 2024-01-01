@@ -15,6 +15,7 @@ const ChecklistScreen = ({ checklist, handleCheckItem }: Props) => {
     <ScrollView style={{ flex: 1, width: "100%" }}>
       {checklist.items.map((item) => (
         <Checkbox.Item
+          rippleColor={"rgba(0, 0, 0, 0)"} // disabled ripple effect
           style={{ flexDirection: "row-reverse" }}
           label={item.name}
           key={item.id}
