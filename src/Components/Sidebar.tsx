@@ -1,6 +1,14 @@
 import React, { PropsWithChildren } from "react";
-import { Animated, Easing } from "react-native";
+import {
+  Animated,
+  Dimensions,
+  Easing,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+
 import { Drawer, IconButton, Surface } from "react-native-paper";
+import { useChecklistState } from "./hooks";
 // import { useSection } from "./Navigator";
 
 type SidebarProps = PropsWithChildren<{
@@ -8,7 +16,7 @@ type SidebarProps = PropsWithChildren<{
   handleHide: () => void;
   width?: number;
 }> &
-  ReturnType<typeof useSection>;
+  ReturnType<typeof useChecklistState>;
 
 export const Sidebar: React.FC<SidebarProps> = ({
   isVisible,
@@ -36,25 +44,33 @@ export const Sidebar: React.FC<SidebarProps> = ({
       }).start();
     }
   }, [isVisible]);
+  const windowWidth = Dimensions.get("window").width;
 
   const sidebarTranslateX = sidebarAnimation.interpolate({
     inputRange: [0, 1],
-    outputRange: [-width, 0],
+    outputRange: [-windowWidth, 0],
   });
 
   return (
     <Animated.View
       style={{
-        width: width,
+        width: windowWidth,
         height: "100%",
         position: "absolute",
+        flex: 1,
+        flexDirection: "row",
         top: 0,
         left: 0,
         transform: [{ translateX: sidebarTranslateX }],
       }}
     >
-      <Surface style={{ flex: 1 }}>
-        <IconButton icon="close" onPress={handleHide}></IconButton>
+      <Surface style={{ width: width }}>
+        <IconButton
+          style={{ alignSelf: "flex-end" }}
+          icon="close"
+          onPress={handleHide}
+        ></IconButton>
+
         <Drawer.Section>{children}</Drawer.Section>
         <Drawer.Section>
           <Drawer.Item
@@ -67,6 +83,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           />
         </Drawer.Section>
       </Surface>
+      <TouchableWithoutFeedback onPress={handleHide}>
+        <View style={{ flex: 1 }} />
+      </TouchableWithoutFeedback>
     </Animated.View>
   );
 };

@@ -21,6 +21,9 @@ const fakeList = [
   },
 ];
 export const useChecklistState = () => {
+  const [lastSelectedChecklistId, setLastSelectedChecklistId] = useState(
+    fakeList[0].id
+  );
   const [visibleSection, setVisibleSection] = React.useState<
     { checklistId: string } | { editChecklistId: string } | "settings" | null
   >();
@@ -32,25 +35,26 @@ export const useChecklistState = () => {
 
   const selectedChecklist =
     (visibleSection &&
-      availableChecklists.find((c) => c.id === visibleSection?.checklistId)) ||
+      availableChecklists.find((c) => {
+        if (
+          typeof visibleSection === "object" &&
+          "checklistId" in visibleSection
+        )
+          return c.id === visibleSection?.checklistId;
+
+        return c.id === lastSelectedChecklistId;
+      })) ||
     null;
 
   const setSelectedChecklist = (c: Checklist) => {
+    setLastSelectedChecklistId(c.id);
     setVisibleSection({ checklistId: c.id });
   };
 
   useEffect(() => {
-    //once
-    // if (!availableChecklists?.length) {
     setAvailableChecklists(fakeList);
-    // }
+    setSelectedChecklist(fakeList[0]);
   }, []);
-
-  useEffect(() => {
-    if (!availableChecklists?.length) return;
-
-    setSelectedChecklist(availableChecklists[0]);
-  }, [availableChecklists]);
 
   const handleCheckItem = (checklistId: string, itemId: string) => {
     setAvailableChecklists((prevChecklists) => {
@@ -89,15 +93,51 @@ export const useChecklistState = () => {
     setIsSaving(false);
   };
 
+  const handleAddChecklist = (checklist: Checklist) => {
+    setAvailableChecklists((prevChecklists) => {
+      return [...prevChecklists, checklist];
+    });
+  };
+  const handleRemoveChecklist = (checklistId: string) => {
+    setAvailableChecklists((prevChecklists) => {
+      return prevChecklists.filter((c) => c.id !== checklistId);
+    });
+
+    if (lastSelectedChecklistId === checklistId && availableChecklists[0]) {
+      setSelectedChecklist(availableChecklists[0]);
+    }
+  };
+
+  const handleClearAllCheckboxes = (checklistId: string) => {
+    setAvailableChecklists((prevChecklists) => {
+      return prevChecklists.map((c) => {
+        if (c.id === checklistId) {
+          return {
+            ...c,
+            items: c.items.map((i) => {
+              return { ...i, checked: false };
+            }),
+          };
+        }
+        return c;
+      });
+    });
+  };
+
   return {
     availableChecklists,
     handleCheckItem,
+    handleClearAllCheckboxes,
     setAvailableChecklists,
     handleSaveChecklist,
+    handleAddChecklist,
+    handleRemoveChecklist,
     isSaving,
     selectedChecklist,
     setSelectedChecklist,
     visibleSection,
     setVisibleSection,
+    lastSelectedChecklistId,
+    setLastSelectedChecklistId,
   };
 };
