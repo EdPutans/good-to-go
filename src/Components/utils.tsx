@@ -1,30 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Checklist } from "../types";
+import { onboardingList } from "./FirstLoadSampleList";
 
 export const seed = () => {
   AsyncStorage.setItem("activeChecklistId", "1");
   AsyncStorage.setItem(
     "checklists",
-    JSON.stringify([
-      {
-        id: "1",
-        name: "test",
-        items: [
-          { id: "1", name: "test", checked: false },
-          { id: "3", name: "Collect dog poo", checked: false },
-          { id: "2", name: "Yiff", checked: true },
-        ],
-      },
-      {
-        id: "2",
-        name: "alt",
-        items: [
-          { id: "1", name: "Take a shit", checked: false },
-          { id: "3", name: "Break a knee", checked: true },
-          { id: "2", name: "Yeer", checked: false },
-        ],
-      },
-    ] as Checklist[])
+    JSON.stringify(onboardingList as Checklist[])
   );
 };
 

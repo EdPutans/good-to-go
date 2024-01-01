@@ -1,5 +1,3 @@
-// import "react-native-gesture-handler";
-
 import React, { useMemo } from "react";
 
 import { useMaterial3Theme } from "@pchmn/expo-material3-theme";

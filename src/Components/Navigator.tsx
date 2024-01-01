@@ -5,18 +5,17 @@ import ManageChecklists from "./ManageChecklists";
 import { Sidebar } from "./Sidebar";
 
 import ChecklistScreen from "./ChecklistScreen";
+import FirstVisitModal from "./FirstVisitModal";
 import { useChecklistState } from "./hooks";
 
 export function Navigator() {
   const handlers = useChecklistState();
 
   const { availableChecklists, visibleSection, setVisibleSection } = handlers;
-
   const [showSidebar, setShowSidebar] = React.useState(false);
 
   const props = {
     ...handlers,
-
     showSidebar,
     setShowSidebar,
   };
@@ -107,6 +106,7 @@ export function Navigator() {
           />
         ))}
       </Sidebar>
+      <FirstVisitModal />
     </>
   );
 }

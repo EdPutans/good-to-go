@@ -1,29 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Checklist } from "../types";
-const fakeList = [
-  {
-    id: "1",
-    name: "test",
-    items: [
-      { id: "1", name: "test", checked: false },
-      { id: "3", name: "Collect dog poo", checked: false },
-      { id: "2", name: "Yiff", checked: true },
-    ],
-  },
-  {
-    id: "2",
-    name: "alt",
-    items: [
-      { id: "1", name: "Take a shit", checked: false },
-      { id: "3", name: "Break a knee", checked: true },
-      { id: "2", name: "Yeer", checked: false },
-    ],
-  },
-];
+import { onboardingList } from "./FirstLoadSampleList";
+
 export const useChecklistState = () => {
   const [lastSelectedChecklistId, setLastSelectedChecklistId] = useState(
-    fakeList[0].id
+    onboardingList[0].id
   );
+
   const [visibleSection, setVisibleSection] = React.useState<
     { checklistId: string } | { editChecklistId: string } | "settings" | null
   >();
@@ -52,8 +35,8 @@ export const useChecklistState = () => {
   };
 
   useEffect(() => {
-    setAvailableChecklists(fakeList);
-    setSelectedChecklist(fakeList[0]);
+    setAvailableChecklists(onboardingList);
+    setSelectedChecklist(onboardingList[0]);
   }, []);
 
   const handleCheckItem = (checklistId: string, itemId: string) => {

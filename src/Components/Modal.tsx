@@ -14,6 +14,7 @@ type Props = {
     onPress: () => void;
   };
   content?: string;
+  invertCTA?: boolean;
 };
 
 const Modal = ({

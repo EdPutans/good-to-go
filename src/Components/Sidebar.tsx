@@ -9,14 +9,16 @@ import {
 
 import { Drawer, IconButton, Surface } from "react-native-paper";
 import { useChecklistState } from "./hooks";
-// import { useSection } from "./Navigator";
 
 type SidebarProps = PropsWithChildren<{
   isVisible: boolean;
   handleHide: () => void;
   width?: number;
 }> &
-  ReturnType<typeof useChecklistState>;
+  Pick<
+    ReturnType<typeof useChecklistState>,
+    "setVisibleSection" | "visibleSection"
+  >;
 
 export const Sidebar: React.FC<SidebarProps> = ({
   isVisible,
