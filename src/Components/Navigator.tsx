@@ -1,6 +1,5 @@
 import React from "react";
-import { Appbar, Drawer, Text } from "react-native-paper";
-import EditChecklist from "./EditChecklist";
+import { Appbar, Drawer } from "react-native-paper";
 import ManageChecklists from "./ManageChecklists";
 import { Sidebar } from "./Sidebar";
 
@@ -21,13 +20,13 @@ export function Navigator() {
   };
 
   const RenderContent = () => {
-    if (!visibleSection) return <Text>Nothing to see here 🤷🏻‍♀️</Text>;
     if (visibleSection === "settings")
       return (
         <ManageChecklists
           handleBack={() =>
             setVisibleSection({ checklistId: props.lastSelectedChecklistId })
           }
+          handleSaveChecklist={props.handleSaveChecklist}
           checklists={availableChecklists}
           handleAddChecklist={() => {
             const newChecklistId = Date.now().toString();
@@ -44,20 +43,19 @@ export function Navigator() {
           }}
         />
       );
-    else if (visibleSection && "editChecklistId" in visibleSection) {
-      const id = visibleSection.editChecklistId;
-      const checklist = availableChecklists.find((c) => c.id === id);
-
-      if (!checklist) return null;
-
-      return (
-        <EditChecklist
-          checklist={checklist}
-          handleSaveChecklist={props.handleSaveChecklist}
-          handleBack={() => setVisibleSection("settings")}
-        />
-      );
-    } else if (visibleSection && "checklistId" in visibleSection) {
+    // else if (visibleSection && "editChecklistId" in visibleSection) {
+    //   const id = visibleSection.editChecklistId;
+    //   const checklist = availableChecklists.find((c) => c.id === id);
+    //   if (!checklist) return null;
+    //   return (
+    //     <EditChecklist
+    //       checklist={checklist}
+    //       handleSaveChecklist={props.handleSaveChecklist}
+    //       handleBack={() => setVisibleSection("settings")}
+    //     />
+    //   );
+    // }
+    else if (visibleSection && "checklistId" in visibleSection) {
       const id = visibleSection.checklistId;
       const checklist = availableChecklists.find((c) => c.id === id);
 

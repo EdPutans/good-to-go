@@ -155,6 +155,7 @@ const EditChecklist = (props: Props) => {
           <Card.Content>
             <FlatList
               scrollEnabled
+              keyExtractor={(item) => item.id}
               data={editedChecklist.items}
               ListEmptyComponent={
                 <View style={{ flex: 1 }}>

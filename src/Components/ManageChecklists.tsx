@@ -2,18 +2,38 @@ import React from "react";
 import { FlatList, View } from "react-native";
 import { Appbar, FAB, IconButton, List, Text } from "react-native-paper";
 import { Checklist } from "../types";
+import EditChecklist from "./EditChecklist";
 import Modal from "./Modal";
 
 const ManageChecklists = (props: {
   checklists: Checklist[];
   handleClickManageChecklist: (id: string) => void;
   handleAddChecklist: () => void;
+  handleSaveChecklist: (checklist: Checklist) => void;
   handleRemoveChecklist: (id: string) => void;
   handleBack: () => void;
 }) => {
   const [checklistToRemove, setChecklistToRemove] = React.useState<
-    Checklist["id"] | undefined
+    Checklist["id"] | null
   >();
+
+  const [editingChecklistId, setEditingChecklistId] = React.useState<
+    Checklist["id"] | null
+  >();
+
+  if (editingChecklistId) {
+    const checklist = props.checklists.find((c) => c.id === editingChecklistId);
+
+    if (!checklist) return <Text>Checklist not found</Text>;
+
+    return (
+      <EditChecklist
+        checklist={checklist}
+        handleSaveChecklist={props.handleSaveChecklist}
+        handleBack={() => setEditingChecklistId(null)}
+      />
+    );
+  }
 
   return (
     <>
@@ -24,6 +44,7 @@ const ManageChecklists = (props: {
       <FlatList
         scrollEnabled
         data={props.checklists}
+        keyExtractor={(item) => item.id}
         ListEmptyComponent={<Text>Add some items, I guess</Text>}
         renderItem={({ item: checklist }) => (
           <View style={{ flexDirection: "row" }}>
@@ -31,7 +52,7 @@ const ManageChecklists = (props: {
               style={{ flex: 1 }}
               title={checklist.name}
               key={checklist.id}
-              onPress={() => props.handleClickManageChecklist(checklist.id)}
+              onPress={() => setEditingChecklistId(checklist.id)}
             />
             <IconButton
               icon="delete"
