@@ -43,6 +43,7 @@ export function Navigator() {
       if (!checklist) return null;
       return (
         <EditChecklist
+          handleRemoveChecklist={props.handleRemoveChecklist}
           checklist={checklist}
           handleSaveChecklist={props.handleSaveChecklist}
           handleBack={() => setVisibleSection("settings")}
@@ -66,6 +67,10 @@ export function Navigator() {
           </Appbar>
           <ChecklistScreen
             {...props}
+            handleEditBrokenChecklist={() =>
+              setVisibleSection({ editChecklistId: id })
+            }
+            availableChecklists={availableChecklists}
             checklist={props.selectedChecklist}
             handleClearAll={
               checklist
@@ -91,8 +96,10 @@ export function Navigator() {
       >
         {availableChecklists.map((checklist) => (
           <Drawer.Item
+            icon={"check"}
             key={checklist.id}
             label={checklist.name}
+            style={{ width: "100%" }}
             onPress={() => {
               setShowSidebar(false);
               props.setSelectedChecklist(checklist);

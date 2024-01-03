@@ -1,6 +1,15 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
 import { FlatList, View } from "react-native";
-import { Appbar, FAB, Icon, IconButton, List, Text } from "react-native-paper";
+import {
+  Appbar,
+  Button,
+  FAB,
+  Icon,
+  IconButton,
+  List,
+  Text,
+} from "react-native-paper";
 import { Checklist } from "../types";
 import EditChecklist from "./EditChecklist";
 import Modal from "./Modal";
@@ -31,6 +40,7 @@ const ManageChecklists = (props: {
         checklist={checklist}
         handleSaveChecklist={props.handleSaveChecklist}
         handleBack={() => setEditingChecklistId(null)}
+        handleRemoveChecklist={props.handleRemoveChecklist}
       />
     );
   }
@@ -46,16 +56,18 @@ const ManageChecklists = (props: {
         data={props.checklists}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={
-          <>
-            <Text variant="bodyLarge" style={{ textAlign: "center" }}>
-              Add some items, I guess
+          <View
+            style={{ alignSelf: "center", alignItems: "center", marginTop: 50 }}
+          >
+            <Text variant="bodyLarge">
+              Create a checklist by clicking the button a the bottom
             </Text>
             <Icon
-              source="arrow-right-"
+              source="arrow-bottom-right-thin"
               size={32}
               // style={{ textAlign: "center", fontSize: 32 }}
             />
-          </>
+          </View>
         }
         renderItem={({ item: checklist }) => (
           <View style={{ flexDirection: "row" }}>
@@ -72,6 +84,17 @@ const ManageChecklists = (props: {
           </View>
         )}
       />
+
+      <Button
+        onPress={() => {
+          AsyncStorage.clear();
+        }}
+        icon="close"
+        style={{ margin: 10, marginBottom: 100 }}
+        mode="contained-tonal"
+      >
+        <Text>[Dev]: Reset App entirely</Text>
+      </Button>
       <Modal
         open={!!checklistToRemove}
         title="Are you sure?"

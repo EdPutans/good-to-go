@@ -72,18 +72,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
           icon="chevron-left"
           onPress={handleHide}
         ></IconButton>
-
-        <Drawer.Section>{children}</Drawer.Section>
-        <Drawer.Section>
-          <Drawer.Item
-            icon="cog"
-            label="Settings"
-            onPress={() => {
-              handleHide();
-              setVisibleSection("settings");
-            }}
-          />
-        </Drawer.Section>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "space-between",
+          }}
+        >
+          <View>{children}</View>
+          <Drawer.Section>
+            <Drawer.Item
+              icon="cog"
+              label="Settings"
+              onPress={() => {
+                handleHide();
+                setVisibleSection("settings");
+              }}
+            />
+          </Drawer.Section>
+        </View>
       </Surface>
       <TouchableWithoutFeedback onPress={handleHide}>
         <View style={{ flex: 1 }} />

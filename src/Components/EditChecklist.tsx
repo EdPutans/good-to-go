@@ -15,6 +15,7 @@ import Modal from "./Modal";
 import { useKeyboardStateListener } from "./utils";
 
 type Props = {
+  handleRemoveChecklist: (id: string) => void;
   checklist: Checklist;
   handleSaveChecklist: (checklist: Checklist) => void;
   handleBack: () => void;
@@ -23,6 +24,7 @@ type Props = {
 const useEditChecklist = (checklist: Checklist) => {
   const [editedChecklist, setEditedChecklist] =
     React.useState<Checklist>(checklist);
+
   const isAddDisabled = editedChecklist.items.some((item) => !item.name);
   const getHandleAdd = () => {
     if (isAddDisabled) return undefined;
@@ -83,8 +85,6 @@ const EditChecklist = (props: Props) => {
   const onClickBack = () => {
     if (isEqual(editedChecklist, props.checklist)) {
       props.handleBack();
-      if (!props.checklist.name || !props.checklist.items.length) {
-      }
       return;
     }
 
@@ -101,7 +101,7 @@ const EditChecklist = (props: Props) => {
       <Appbar>
         <Appbar.BackAction onPress={onClickBack} />
         <Appbar.Content title={`Editing: ${editedChecklist.name}`} />
-        <Tooltip title="A checklist without items and without a name can't be saved">
+        <Tooltip title="A checklist needs items and a name">
           <Appbar.Action
             icon="check"
             disabled={isSaveDisabled}
@@ -167,11 +167,14 @@ const EditChecklist = (props: Props) => {
       <Modal
         open={isModalVisible}
         title="Are you sure?"
-        content="You have unsaved changes. Are you sure you want to go back?"
+        content={`You have unsaved changes. Are you sure you want to go back?`}
         okProps={{
           label: "Very sure",
           onPress: () => {
             props.handleBack();
+            if (!editedChecklist.items.length) {
+              props.handleRemoveChecklist(props.checklist.id);
+            }
           },
         }}
         cancelProps={{
