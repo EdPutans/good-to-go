@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Checklist } from "../types";
 import { onboardingList } from "./FirstLoadSampleList";
 
+const listOfEmojis:string[] = ["🍕", "🍔", "🍟", "🍗", "🥩", "🥓", "🍖", "🌭", "🍿", "🧂", "🥚", "🍳", "🥞", "🧇", "🥓", "🥯", "🥨", "🥐", "🍞", "🥖", "🥪", "🌮", "🌯", "🥙", "🧆", "🥘", "🥫", "🍝", "🍜", "🍲", "🍛", "🍣", "🍱", "🥟", "🦪", "🍤", "🍙", "🍚", "🍘", "🍥", "🥠", "🥮", "🍢", "🍡", "🍧", "🍨", "🍦", "🥧", "🧁", "🍰", "🎂", "🍮", "🍭", "🍬", "🍫", "🍿", "🍩", "🍪", "🌰", "🥜", "🍯", "🥛", "🍼", "☕️", "🍵", "🧃", "🥤", "🍶", "🍺", "🍻", "🥂", "🍷", "🥃", "🍸", "🍹", "🍾", "🧉", "🧊", "🥄", "🍴", "🍽", "🥣", "🥡", "🥢", "🧂", "🧈", "🍽", "🍴", "🥄", "🥣", "🥡", "🥢", "🧂", "🧈", "🍽", "🍴", "🥄", "🥣", "🥡", "🥢", "🗿"]
+const getRandomEmoji = () => {
+  return listOfEmojis[Math.floor(Math.random() * listOfEmojis.length)];
+}
+
 export const useChecklistState = () => {
   const [lastSelectedChecklistId, setLastSelectedChecklistId] = useState(
     onboardingList[0].id
@@ -17,16 +22,15 @@ export const useChecklistState = () => {
   );
 
   const selectedChecklist =
-    (visibleSection &&
-      availableChecklists.find((c) => {
+      availableChecklists?.find((c) => {
         if (
+          visibleSection &&
           typeof visibleSection === "object" &&
           "checklistId" in visibleSection
-        )
+        ) {
           return c.id === visibleSection?.checklistId;
-
-        return c.id === lastSelectedChecklistId;
-      })) ||
+        }
+      }) ||
     null;
 
   const setSelectedChecklist = (c: Checklist) => {
@@ -56,6 +60,16 @@ export const useChecklistState = () => {
     });
   };
 
+  const handleAddNewChecklist = () => {
+      const newChecklistId = Date.now().toString();
+      handleAddChecklist({
+        id: newChecklistId,
+        name: "Check deez nuts " + getRandomEmoji(),
+        items: [],
+      })
+      setVisibleSection({editChecklistId: newChecklistId})
+  }
+
   const handleSaveChecklist = (checklist: Checklist) => {
     setIsSaving(true);
     const replaceCh = availableChecklists.findIndex(
@@ -81,14 +95,11 @@ export const useChecklistState = () => {
       return [...prevChecklists, checklist];
     });
   };
+  
   const handleRemoveChecklist = (checklistId: string) => {
     setAvailableChecklists((prevChecklists) => {
       return prevChecklists.filter((c) => c.id !== checklistId);
     });
-
-    if (lastSelectedChecklistId === checklistId && availableChecklists[0]) {
-      setSelectedChecklist(availableChecklists[0]);
-    }
   };
 
   const handleClearAllCheckboxes = (checklistId: string) => {
@@ -121,6 +132,7 @@ export const useChecklistState = () => {
     visibleSection,
     setVisibleSection,
     lastSelectedChecklistId,
+    handleAddNewChecklist,
     setLastSelectedChecklistId,
   };
 };

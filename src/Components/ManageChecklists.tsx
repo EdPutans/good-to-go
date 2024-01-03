@@ -1,6 +1,6 @@
 import React from "react";
 import { FlatList, View } from "react-native";
-import { Appbar, FAB, IconButton, List, Text } from "react-native-paper";
+import { Appbar, FAB, Icon, IconButton, List, Text } from "react-native-paper";
 import { Checklist } from "../types";
 import EditChecklist from "./EditChecklist";
 import Modal from "./Modal";
@@ -45,7 +45,18 @@ const ManageChecklists = (props: {
         scrollEnabled
         data={props.checklists}
         keyExtractor={(item) => item.id}
-        ListEmptyComponent={<Text>Add some items, I guess</Text>}
+        ListEmptyComponent={
+          <>
+            <Text variant="bodyLarge" style={{ textAlign: "center" }}>
+              Add some items, I guess
+            </Text>
+            <Icon
+              source="arrow-right-"
+              size={32}
+              // style={{ textAlign: "center", fontSize: 32 }}
+            />
+          </>
+        }
         renderItem={({ item: checklist }) => (
           <View style={{ flexDirection: "row" }}>
             <List.Item

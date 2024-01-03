@@ -33,24 +33,24 @@ const preSleepRoutineYouCouldAutomateProbably = [
 ];
 
 export const onboardingList: Checklist[] = [
-  // {
-  //   name: "Flight to Mars",
-  //   id: new Date().toISOString() + 1,
-  //   items: justMuskThings.map((item, index) => ({
-  //     id: new Date().toISOString() + index,
-  //     name: item,
-  //     checked: false,
-  //   })),
-  // },
-  // {
-  //   name: "Gym bag checklist",
-  //   id: new Date().toISOString() + 2,
-  //   items: gymbagItems.map((item, index) => ({
-  //     id: new Date().toISOString() + index,
-  //     name: item,
-  //     checked: false,
-  //   })),
-  // },
+  {
+    name: "Flight to Mars",
+    id: new Date().toISOString() + 1,
+    items: justMuskThings.map((item, index) => ({
+      id: new Date().toISOString() + index,
+      name: item,
+      checked: false,
+    })),
+  },
+  {
+    name: "Gym bag checklist",
+    id: new Date().toISOString() + 2,
+    items: gymbagItems.map((item, index) => ({
+      id: new Date().toISOString() + index,
+      name: item,
+      checked: false,
+    })),
+  },
   {
     name: "Nightly routine I can't automate yet",
     id: new Date().toISOString() + 3,

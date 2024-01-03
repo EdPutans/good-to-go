@@ -1,4 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useState } from "react";
+import { Keyboard } from "react-native";
 import { Checklist } from "../types";
 import { onboardingList } from "./FirstLoadSampleList";
 
@@ -91,4 +93,18 @@ export const handleCheckItem = async (itemId: string) => {
   return checklist;
   // update the item's checked status
   // save the checklist
+};
+
+export const useKeyboardStateListener = () => {
+  const [keyboardState, setKeyboardState] = useState<"visible" | "hidden">(
+    "hidden"
+  );
+
+  Keyboard.addListener("keyboardDidShow", () => {
+    setKeyboardState("visible");
+  });
+  Keyboard.addListener("keyboardDidHide", () => {
+    setKeyboardState("hidden");
+  });
+  return { keyboardState };
 };

@@ -7,7 +7,7 @@ import { Navigator } from "./src/Components/Navigator";
 
 export default function App() {
   const colorScheme = useColorScheme();
-  const { theme } = useMaterial3Theme({ fallbackSourceColor: "#b17521" });
+  const { theme } = useMaterial3Theme({ fallbackSourceColor: "#56b954" });
 
   const paperTheme = useMemo(
     () =>

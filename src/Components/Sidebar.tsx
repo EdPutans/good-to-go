@@ -69,7 +69,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <Surface style={{ width: width }}>
         <IconButton
           style={{ alignSelf: "flex-end" }}
-          icon="close"
+          icon="chevron-left"
           onPress={handleHide}
         ></IconButton>
 
