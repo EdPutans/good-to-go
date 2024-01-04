@@ -129,8 +129,8 @@ const EditChecklist = (props: Props) => {
       <ScrollView
         style={{
           backgroundColor: theme,
-          marginVertical: 10,
-          marginHorizontal: 5,
+          paddingVertical: 10,
+          paddingHorizontal: 5,
         }}
       >
         <Card.Title title="Name of the checklist"></Card.Title>

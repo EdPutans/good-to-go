@@ -4,7 +4,6 @@ import {
   BackHandler,
   Dimensions,
   Easing,
-  StatusBar,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -30,8 +29,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
   setVisibleSection,
 }) => {
   const sidebarAnimation = React.useRef(new Animated.Value(0)).current;
-
-  const h = StatusBar.currentHeight;
 
   useEffect(() => {
     const handleFake = () => {
@@ -83,7 +80,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         transform: [{ translateX: sidebarTranslateX }],
       }}
     >
-      <Surface style={{ width: width, paddingTop: h }}>
+      <Surface style={{ width: width }}>
         <IconButton
           style={{ alignSelf: "flex-end" }}
           icon="chevron-left"

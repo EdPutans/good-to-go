@@ -1,13 +1,12 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect } from "react";
 import { BackHandler, FlatList, View } from "react-native";
 import {
   Appbar,
-  Button,
   FAB,
   IconButton,
   List,
   Text,
+  useTheme,
 } from "react-native-paper";
 import { Checklist } from "../types";
 import EditChecklist from "./EditChecklist";
@@ -42,6 +41,8 @@ const ManageChecklists = (props: {
     };
   }, [props.handleBack]);
 
+  const bg = useTheme().colors.surface;
+
   if (editingChecklistId) {
     const checklist = props.checklists.find((c) => c.id === editingChecklistId);
 
@@ -56,7 +57,6 @@ const ManageChecklists = (props: {
       />
     );
   }
-
   return (
     <>
       <Appbar>
@@ -65,6 +65,7 @@ const ManageChecklists = (props: {
       </Appbar>
       <FlatList
         scrollEnabled
+        style={{ backgroundColor: bg }}
         data={props.checklists}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={
@@ -92,7 +93,7 @@ const ManageChecklists = (props: {
         )}
       />
 
-      <Button
+      {/* <Button
         onPress={() => {
           AsyncStorage.clear();
         }}
@@ -101,7 +102,7 @@ const ManageChecklists = (props: {
         mode="contained-tonal"
       >
         <Text>[Dev]: Reset App entirely</Text>
-      </Button>
+      </Button> */}
       <Modal
         open={!!checklistToRemove}
         title="Are you sure?"

@@ -1,4 +1,4 @@
-import { ActivityIndicator, Appbar } from "react-native-paper";
+import { ActivityIndicator, Appbar, useTheme } from "react-native-paper";
 import ChecklistScreen from "./ChecklistScreen";
 import EditChecklist from "./EditChecklist";
 import ManageChecklists from "./ManageChecklists";
@@ -10,6 +10,8 @@ export const RenderContent = (
     setShowSidebar: any;
   }
 ) => {
+  const color = useTheme().colors.tertiary;
+
   if (props.isLoading)
     return <ActivityIndicator style={{ height: "100%" }} size={64} />;
 
@@ -51,12 +53,12 @@ export const RenderContent = (
 
   const id = props.lastSelectedChecklistId;
   const checklist = props.availableChecklists.find((c) => c.id === id);
-
   return (
     <>
       <Appbar style={{ marginTop: 0 }}>
         <Appbar.Action
           icon="menu"
+          color={color}
           onPress={() => props.setShowSidebar((prev) => !prev)}
         />
         <Appbar.Content title={props.selectedChecklist?.name || ""} />

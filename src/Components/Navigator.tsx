@@ -2,7 +2,7 @@ import React from "react";
 import { Drawer } from "react-native-paper";
 import { Sidebar } from "./Sidebar";
 
-import { StatusBar, View } from "react-native";
+import { View } from "react-native";
 import FirstVisitModal from "./FirstVisitModal";
 import { RenderContent } from "./RenderNavigatorContent";
 import { useChecklistState } from "./hooks";
@@ -19,10 +19,9 @@ export function Navigator() {
     setShowSidebar,
   };
 
-  const h = StatusBar.currentHeight;
   return (
     <>
-      <View style={{ marginTop: h, flex: 1 }}>
+      <View style={{ flex: 1 }}>
         <RenderContent
           {...props}
           showSidebar={showSidebar}

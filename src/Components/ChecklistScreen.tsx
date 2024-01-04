@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 
 import { ScrollView, View } from "react-native";
-import { Button, Card, Checkbox, FAB, Text } from "react-native-paper";
+import {
+  Button,
+  Card,
+  Checkbox,
+  FAB,
+  Text,
+  useTheme,
+} from "react-native-paper";
 import { Checklist } from "../types";
 import Modal from "./Modal";
 
@@ -120,6 +127,7 @@ const ChecklistScreen = (props: Props) => {
   //   return ListComponent;
   // }, [checklist, availableChecklists]);
 
+  const backgroundColor = useTheme().colors.background;
   return (
     <View
       style={{
@@ -132,6 +140,7 @@ const ChecklistScreen = (props: Props) => {
         style={{
           overflow: "scroll",
           flex: 1,
+          backgroundColor,
           height: "100%",
         }}
       >
