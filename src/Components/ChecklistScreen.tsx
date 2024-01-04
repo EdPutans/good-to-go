@@ -107,19 +107,18 @@ const ChecklistScreen = (props: Props) => {
       setSelectedChecklist(availableChecklists[0]);
     }
   }, [availableChecklists, checklist]);
-  const Content = React.useMemo(() => {
-    // if (availableChecklists?.length > 0 && !checklist) {
-    //   return UnselectedChecklistComponent;
-    // }
-    if (!availableChecklists?.length) {
-      return NoChecklistsComponent;
-    }
-    if (!checklist?.items?.length) {
-      return NoItemsComponent;
-    }
+  // const Content = React.useMemo(() => {
+  //   // if (availableChecklists?.length > 0 && !checklist) {
+  //   //   return UnselectedChecklistComponent;
+  //   // }
+  //   if (!availableChecklists?.length) {
+  //     return NoChecklistsComponent;
+  //   }
+  //   if (
+  //   }
 
-    return ListComponent;
-  }, [checklist, availableChecklists]);
+  //   return ListComponent;
+  // }, [checklist, availableChecklists]);
 
   return (
     <View
@@ -136,11 +135,16 @@ const ChecklistScreen = (props: Props) => {
           height: "100%",
         }}
       >
-        {/* <Content /> */}
-        <ListComponent
-          checklist={checklist}
-          getHandleCheckFinal={getHandleCheckFinal}
-        />
+        {!availableChecklists?.length && <NoChecklistsComponent />}
+        {!!availableChecklists?.length && !checklist?.items?.length && (
+          <NoItemsComponent />
+        )}
+        {checklist && (
+          <ListComponent
+            checklist={checklist}
+            getHandleCheckFinal={getHandleCheckFinal}
+          />
+        )}
       </ScrollView>
       <Modal
         open={isModalOpen}

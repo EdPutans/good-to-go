@@ -1,12 +1,10 @@
 import React from "react";
-import { ActivityIndicator, Appbar, Drawer } from "react-native-paper";
-import ManageChecklists from "./ManageChecklists";
+import { Drawer } from "react-native-paper";
 import { Sidebar } from "./Sidebar";
 
-import { setStatusBarHidden } from "expo-status-bar";
-import ChecklistScreen from "./ChecklistScreen";
-import EditChecklist from "./EditChecklist";
+import { StatusBar, View } from "react-native";
 import FirstVisitModal from "./FirstVisitModal";
+import { RenderContent } from "./RenderNavigatorContent";
 import { useChecklistState } from "./hooks";
 
 export function Navigator() {
@@ -21,78 +19,18 @@ export function Navigator() {
     setShowSidebar,
   };
 
-  const RenderContent = () => {
-    if (props.isLoading)
-      return <ActivityIndicator style={{ height: "100%" }} size={64} />;
-
-    if (visibleSection === "settings")
-      return (
-        <ManageChecklists
-          handleBack={() =>
-            setVisibleSection({ checklistId: props.lastSelectedChecklistId })
-          }
-          handleSaveChecklist={props.handleSaveChecklist}
-          checklists={availableChecklists}
-          handleAddChecklist={props.handleAddNewChecklist}
-          handleRemoveChecklist={props.handleRemoveChecklist}
-          handleClickManageChecklist={(id: string) => {
-            setVisibleSection({ editChecklistId: id });
-          }}
-        />
-      );
-    else if (visibleSection && "editChecklistId" in visibleSection) {
-      const id = visibleSection.editChecklistId;
-      const checklist = availableChecklists.find((c) => c.id === id);
-      if (!checklist) return null;
-      return (
-        <EditChecklist
-          handleRemoveChecklist={props.handleRemoveChecklist}
-          checklist={checklist}
-          handleSaveChecklist={props.handleSaveChecklist}
-          handleBack={() => setVisibleSection("settings")}
-        />
-      );
-    } else {
-      const id = props.lastSelectedChecklistId;
-      const checklist = availableChecklists.find((c) => c.id === id);
-      setStatusBarHidden(true, "slide");
-
-      return (
-        <>
-          <Appbar style={{ marginTop: 0 }}>
-            <Appbar.Action
-              icon="menu"
-              onPress={() => setShowSidebar((prev) => !prev)}
-            />
-            <Appbar.Content
-              title={props.selectedChecklist?.name || "🤷🏻‍♀️ Nothing here"}
-            />
-          </Appbar>
-          <ChecklistScreen
-            {...props}
-            handleEditBrokenChecklist={() =>
-              setVisibleSection({ editChecklistId: id })
-            }
-            availableChecklists={availableChecklists}
-            checklist={props.selectedChecklist}
-            handleClearAll={
-              checklist
-                ? () => props.handleClearAllCheckboxes(checklist.id)
-                : undefined
-            }
-            setSelectedChecklist={props.setSelectedChecklist}
-            handleAddIfNoneAvailable={props.handleAddNewChecklist}
-            handleCheckItem={props.handleCheckItem}
-          />
-        </>
-      );
-    }
-  };
-
+  const h = StatusBar.currentHeight;
   return (
     <>
-      <RenderContent />
+      <View style={{ marginTop: h, flex: 1 }}>
+        <RenderContent
+          {...props}
+          showSidebar={showSidebar}
+          setShowSidebar={setShowSidebar}
+        />
 
+        <FirstVisitModal firstLoadCallback={props.firstLoadCallback} />
+      </View>
       <Sidebar
         setVisibleSection={setVisibleSection}
         visibleSection={visibleSection}
@@ -112,7 +50,6 @@ export function Navigator() {
           />
         ))}
       </Sidebar>
-      <FirstVisitModal firstLoadCallback={props.firstLoadCallback} />
     </>
   );
 }
