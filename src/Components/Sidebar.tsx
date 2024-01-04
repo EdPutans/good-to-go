@@ -1,6 +1,7 @@
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useEffect } from "react";
 import {
   Animated,
+  BackHandler,
   Dimensions,
   Easing,
   TouchableWithoutFeedback,
@@ -28,6 +29,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
   setVisibleSection,
 }) => {
   const sidebarAnimation = React.useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const handleFake = () => {
+      handleHide();
+      return true;
+    };
+
+    BackHandler.addEventListener("hardwareBackPress", handleFake);
+
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", handleFake);
+    };
+  }, [handleHide]);
 
   React.useEffect(() => {
     if (isVisible) {

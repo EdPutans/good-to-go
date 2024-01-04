@@ -12,16 +12,34 @@ type Props = {
   handleAddIfNoneAvailable: () => void;
   handleEditBrokenChecklist: () => void;
   availableChecklists: Checklist[];
+  setSelectedChecklist: (checklist: Checklist) => void;
 };
 
-const ChecklistScreen = ({
-  checklist,
-  handleCheckItem,
-  availableChecklists,
-  handleClearAll,
-  handleAddIfNoneAvailable,
-  handleEditBrokenChecklist,
-}: Props) => {
+const ListComponent = ({ checklist, getHandleCheckFinal }) => (
+  <>
+    {checklist?.items.map((item) => (
+      <Checkbox.Item
+        key={item.id}
+        rippleColor={"rgba(0, 0, 0, 0)"} // disabled ripple effect
+        style={{ flexDirection: "row-reverse" }}
+        label={item.name || "Unnamed checklist"}
+        status={item.checked ? "checked" : "unchecked"}
+        onPress={getHandleCheckFinal(item)}
+      />
+    ))}
+  </>
+);
+
+const ChecklistScreen = (props: Props) => {
+  const {
+    checklist,
+    handleCheckItem,
+    availableChecklists,
+    handleClearAll,
+    handleAddIfNoneAvailable,
+    handleEditBrokenChecklist,
+    setSelectedChecklist,
+  } = props;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const getHandleCheckFinal = (item: Checklist["items"][number]) => {
@@ -42,7 +60,7 @@ const ChecklistScreen = ({
   }, [hasProvoked, checklist]);
 
   const UnselectedChecklistComponent = () => (
-    <Card style={{ margin: 10, marginTop: 30 }}>
+    <Card style={{ margin: 20 }}>
       <Card.Title title="Oops!" />
       <Card.Content>
         <Text variant="bodyLarge">
@@ -54,7 +72,7 @@ const ChecklistScreen = ({
   );
 
   const NoChecklistsComponent = () => (
-    <Card style={{ margin: 10, marginTop: 30 }}>
+    <Card style={{ margin: 20 }}>
       <Card.Title title="Oops!" />
       <Card.Content>
         <Text variant="bodyLarge">
@@ -71,7 +89,7 @@ const ChecklistScreen = ({
     </Card>
   );
   const NoItemsComponent = () => (
-    <Card style={{ margin: 10, marginTop: 30 }}>
+    <Card style={{ margin: 20 }}>
       <Card.Title title="Oops, you have no items to check!" />
       <Card.Content>
         <Text>You can fix that</Text>
@@ -84,25 +102,22 @@ const ChecklistScreen = ({
     </Card>
   );
 
-  const ListComponent = () => (
-    <ScrollView style={{ flex: 1, height: "100%" }}>
-      {checklist?.items?.map((item) => (
-        <Checkbox.Item
-          key={item.id}
-          rippleColor={"rgba(0, 0, 0, 0)"} // disabled ripple effect
-          style={{ flexDirection: "row-reverse" }}
-          label={item.name || "Unnamed checklist"}
-          status={item.checked ? "checked" : "unchecked"}
-          onPress={getHandleCheckFinal(item)}
-        />
-      ))}
-    </ScrollView>
-  );
-
+  useEffect(() => {
+    if (availableChecklists?.length > 0 && !checklist) {
+      setSelectedChecklist(availableChecklists[0]);
+    }
+  }, [availableChecklists, checklist]);
   const Content = React.useMemo(() => {
-    if (availableChecklists && !checklist) return UnselectedChecklistComponent;
-    if (!checklist) return NoChecklistsComponent;
-    if (!checklist?.items?.length) return NoItemsComponent;
+    // if (availableChecklists?.length > 0 && !checklist) {
+    //   return UnselectedChecklistComponent;
+    // }
+    if (!availableChecklists?.length) {
+      return NoChecklistsComponent;
+    }
+    if (!checklist?.items?.length) {
+      return NoItemsComponent;
+    }
+
     return ListComponent;
   }, [checklist, availableChecklists]);
 
@@ -111,11 +126,22 @@ const ChecklistScreen = ({
       style={{
         flex: 1,
         height: "100%",
+        justifyContent: "center",
       }}
     >
-      {/* {checklist?.items?.length ? <ListComponent /> : <NoChecklistsComponent />} */}
-
-      <Content />
+      <ScrollView
+        style={{
+          overflow: "scroll",
+          flex: 1,
+          height: "100%",
+        }}
+      >
+        {/* <Content /> */}
+        <ListComponent
+          checklist={checklist}
+          getHandleCheckFinal={getHandleCheckFinal}
+        />
+      </ScrollView>
       <Modal
         open={isModalOpen}
         title="Nice one!"
@@ -136,7 +162,6 @@ const ChecklistScreen = ({
       />
       {handleClearAll && (
         <FAB
-          // size="medium"
           customSize={58}
           style={{
             position: "absolute",

@@ -1,5 +1,5 @@
 import React from "react";
-import { Appbar, Drawer } from "react-native-paper";
+import { ActivityIndicator, Appbar, Drawer } from "react-native-paper";
 import ManageChecklists from "./ManageChecklists";
 import { Sidebar } from "./Sidebar";
 
@@ -22,6 +22,9 @@ export function Navigator() {
   };
 
   const RenderContent = () => {
+    if (props.isLoading)
+      return <ActivityIndicator style={{ height: "100%" }} size={64} />;
+
     if (visibleSection === "settings")
       return (
         <ManageChecklists
@@ -77,6 +80,7 @@ export function Navigator() {
                 ? () => props.handleClearAllCheckboxes(checklist.id)
                 : undefined
             }
+            setSelectedChecklist={props.setSelectedChecklist}
             handleAddIfNoneAvailable={props.handleAddNewChecklist}
             handleCheckItem={props.handleCheckItem}
           />
@@ -88,6 +92,7 @@ export function Navigator() {
   return (
     <>
       <RenderContent />
+
       <Sidebar
         setVisibleSection={setVisibleSection}
         visibleSection={visibleSection}
@@ -107,7 +112,7 @@ export function Navigator() {
           />
         ))}
       </Sidebar>
-      <FirstVisitModal />
+      <FirstVisitModal firstLoadCallback={props.firstLoadCallback} />
     </>
   );
 }

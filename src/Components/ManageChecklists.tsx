@@ -1,11 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React from "react";
-import { FlatList, View } from "react-native";
+import React, { useEffect } from "react";
+import { BackHandler, FlatList, View } from "react-native";
 import {
   Appbar,
   Button,
   FAB,
-  Icon,
   IconButton,
   List,
   Text,
@@ -29,6 +28,19 @@ const ManageChecklists = (props: {
   const [editingChecklistId, setEditingChecklistId] = React.useState<
     Checklist["id"] | null
   >();
+
+  useEffect(() => {
+    const handleFake = () => {
+      props.handleBack();
+      return true;
+    };
+
+    BackHandler.addEventListener("hardwareBackPress", handleFake);
+
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", handleFake);
+    };
+  }, [props.handleBack]);
 
   if (editingChecklistId) {
     const checklist = props.checklists.find((c) => c.id === editingChecklistId);
@@ -59,14 +71,9 @@ const ManageChecklists = (props: {
           <View
             style={{ alignSelf: "center", alignItems: "center", marginTop: 50 }}
           >
-            <Text variant="bodyLarge">
-              Create a checklist by clicking the button a the bottom
+            <Text style={{ textAlign: "center" }} variant="bodyLarge">
+              Create a checklist by clicking the + button
             </Text>
-            <Icon
-              source="arrow-bottom-right-thin"
-              size={32}
-              // style={{ textAlign: "center", fontSize: 32 }}
-            />
           </View>
         }
         renderItem={({ item: checklist }) => (

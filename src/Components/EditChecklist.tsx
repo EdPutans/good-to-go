@@ -1,6 +1,6 @@
 import isEqual from "lodash/isEqual";
 import React, { useEffect, useRef } from "react";
-import { Keyboard, ScrollView, View } from "react-native";
+import { BackHandler, Keyboard, ScrollView, View } from "react-native";
 import {
   Appbar,
   Card,
@@ -85,11 +85,20 @@ const EditChecklist = (props: Props) => {
   const onClickBack = () => {
     if (isEqual(editedChecklist, props.checklist)) {
       props.handleBack();
-      return;
+      return true;
     }
 
     setIsModalVisible(true);
+    return true;
   };
+
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", onClickBack);
+
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", onClickBack);
+    };
+  }, [editedChecklist, onClickBack]);
 
   const { keyboardState } = useKeyboardStateListener();
   const isSaveDisabled = !editedChecklist.name || !editedChecklist.items.length;

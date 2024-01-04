@@ -54,10 +54,16 @@ export const onboardingList: Checklist[] = [
   {
     name: "Nightly routine I can't automate yet",
     id: new Date().toISOString() + 3,
-    items: preSleepRoutineYouCouldAutomateProbably.map((item, index) => ({
-      id: new Date().toISOString() + index,
-      name: item,
-      checked: false,
-    })),
+    items: [
+      preSleepRoutineYouCouldAutomateProbably,
+      preSleepRoutineYouCouldAutomateProbably,
+      preSleepRoutineYouCouldAutomateProbably,
+    ]
+      .flat()
+      .map((item, index) => ({
+        id: new Date().toISOString() + index,
+        name: item,
+        checked: false,
+      })),
   },
 ];

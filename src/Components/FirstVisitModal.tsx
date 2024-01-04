@@ -2,17 +2,21 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect } from "react";
 import { Button, Dialog, Text } from "react-native-paper";
 
-const FirstVisitModal = () => {
+type Props = {
+  firstLoadCallback: () => void;
+};
+
+const FirstVisitModal = ({ firstLoadCallback }: Props) => {
   const [firstVisit, setFirstVisit] = React.useState(false);
 
   const dismiss = () => {
-    AsyncStorage.setItem("isntFirstVisit", "whatever");
     setFirstVisit(false);
   };
 
   const getIsNotFirstVisit = async () => {
     const isntFirstVisit = await AsyncStorage.getItem("isntFirstVisit");
     if (isntFirstVisit) return;
+    firstLoadCallback();
 
     setFirstVisit(true);
   };

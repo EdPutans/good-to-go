@@ -77,7 +77,6 @@ export const handleCheckItem = async (itemId: string) => {
 
   const checklist = await getChecklistById(activeChecklistId);
   if (!checklist) {
-    console.log("no checklist", { activeChecklistId });
     return null;
   }
 
