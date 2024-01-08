@@ -1,7 +1,10 @@
 import React, { useEffect, useMemo } from "react";
 
 import { useMaterial3Theme } from "@pchmn/expo-material3-theme";
-import { setStatusBarStyle } from "expo-status-bar";
+import {
+  setStatusBarBackgroundColor,
+  setStatusBarStyle,
+} from "expo-status-bar";
 import { useColorScheme } from "react-native";
 import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper";
 import { Navigator } from "./src/Components/Navigator";
@@ -19,6 +22,11 @@ export default function App() {
   );
 
   useEffect(() => {
+    setStatusBarBackgroundColor(
+      colorScheme === "dark" ? theme.dark.background : theme.light.background,
+      true
+    );
+
     setStatusBarStyle(colorScheme === "dark" ? "dark" : "light");
   }, [colorScheme]);
 

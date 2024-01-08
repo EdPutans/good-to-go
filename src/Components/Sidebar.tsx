@@ -35,13 +35,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
       handleHide();
       return true;
     };
-
-    BackHandler.addEventListener("hardwareBackPress", handleFake);
-
+    if (isVisible) {
+      BackHandler.addEventListener("hardwareBackPress", handleFake);
+    } else {
+      BackHandler.removeEventListener("hardwareBackPress", handleFake);
+    }
     return () => {
       BackHandler.removeEventListener("hardwareBackPress", handleFake);
     };
-  }, [handleHide]);
+  }, [handleHide, isVisible]);
 
   React.useEffect(() => {
     if (isVisible) {
