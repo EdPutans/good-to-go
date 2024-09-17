@@ -1,5 +1,7 @@
 ## Good to go
 
+_the app currently installs as `checklists-ts`. I am aware and will fix that shortly. Cheers_
+
 ### An app for ticking off recurring checklists with the same set of tasks.
 
 Use it for any consistent set of tasks, from packing for your quarterly office meetups, to making sure you haven't forgotten to add salt this time.
