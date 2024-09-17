@@ -1,6 +1,6 @@
 ## Good to go
 
-_the app currently installs as `checklists-ts`. I am aware and will fix that shortly. Cheers_
+_the app currently installs as `checklists-ts` and a `CheckMate` splash. I couldn't come up with a name for a while and will consolidate it shortly. Cheers_
 
 ### An app for ticking off recurring checklists with the same set of tasks.
 
