@@ -22,5 +22,8 @@ _You are welcome to play around with the app_
 
 ### Bugs?
 
-This project was tossed together over a couple evenings and you can clearly see that in the quality of the code.
+This project was tossed together over a couple evenings and you can clearly see that in the quality of the code. 
+
+(That, and I couldn't be bothered to figure out why the early material you library refused to work nicely with navigation)
+
 There are likely bugs or unexpected behaviours - if you find any please raise an issue ☝️
